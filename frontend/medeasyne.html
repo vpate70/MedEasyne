@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedEasyne</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  h1 {
+    color: red;
+  }
+  
+  #searchContainer {
+    text-align: center;
+  }
+  #searchResults {
+    list-style-type: none;
+    padding: 0;
+  }
+  #searchResults li {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+</style>
+</head>
+<body>
+<h1>MedEasyne</h1>
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="Enter your search query...">
+  <button onclick="search()">Search</button>
+</div>
+<ul id="searchResults"></ul>
+
+<script src="medeasyne.js"></script>
+</body>
+</html>
