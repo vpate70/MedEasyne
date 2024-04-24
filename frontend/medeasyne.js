@@ -1,7 +1,20 @@
-  function search() {
+  async function search() {
+    const url = 'http://127.0.0.1:8000/search';
     const query = document.getElementById("searchInput").value.toLowerCase();
-    const results = ["result1", "result2", "result3"];
-    displayResults(results);
+    options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: query}),
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+        throw new Error('Search response not OK');
+    }
+    const data = await response.json();
+    searchResults = data.results
+    displayResults(searchResults);
   }
   
   function displayResults(results) {

@@ -3,9 +3,11 @@ from whoosh.qparser import QueryParser
 
 class SearchEngine:
     def __init__(self, index_dir):
-        self.index = open_dir(index_dir)
+        # self.index = open_dir(index_dir)
+        pass
 
     def search(self, query, limit=5):
+        return [query+'1', query+'2', query+'3']
         with self.index.searcher() as searcher:
             parsed = QueryParser("abstract", self.index.schema).parse(query) # needs to be that multiquery thing
             results = searcher.search(parsed, limit=limit)
