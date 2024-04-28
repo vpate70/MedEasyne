@@ -12,9 +12,10 @@
     if (!response.ok) {
         throw new Error('Search response not OK');
     }
-    const data = await response.json();
-    searchResults = data.results
-    displayResults(searchResults);
+    const results = await response.json();
+    // note we have results.abstracts that we can then feed to the llm as needed.
+    // the lists are parallel: results.titles[i] corresponds to results.abstracts[i]
+    displayResults(results.titles);
   }
   
   function displayResults(results) {

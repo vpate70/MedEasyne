@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-engine = SearchEngine(r'./index/index')
+engine = SearchEngine(r'./index')
 llm = LLM("API")
 
 class SearchQuery(BaseModel):
@@ -27,7 +27,8 @@ class SearchQuery(BaseModel):
 @app.post("/search")
 async def search(search_query: SearchQuery):
     results = engine.search(search_query.query)
-    return JSONResponse(content={"results": results})
+    print(results)
+    return JSONResponse(content={"titles": results[0], "authors": results[1], "abstracts": results[2]})
 
 # made a seperate endpoint for now, since localLLM will take several minutes to run
 @app.get("/llm")

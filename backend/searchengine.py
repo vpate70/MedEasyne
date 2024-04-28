@@ -1,14 +1,14 @@
 from whoosh.index import open_dir
-from whoosh.qparser import QueryParser
+from whoosh.qparser import MultifieldParser
 
 class SearchEngine:
     def __init__(self, index_dir):
-        # self.index = open_dir(index_dir)
+        self.index = open_dir(index_dir)
         pass
 
-    def search(self, query, limit=5):
-        return [query+'1', query+'2', query+'3']
+    def search(self, query, limit=3):
         with self.index.searcher() as searcher:
-            parsed = QueryParser("abstract", self.index.schema).parse(query) # needs to be that multiquery thing
+            parsed = MultifieldParser(["title", "abstract"], self.index.schema).parse(query)
             results = searcher.search(parsed, limit=limit)
-            return results
+            # some titles are enclosed with brackets; just strip them
+            return [hit['title'].strip('[]') for hit in results], [hit['authors'] for hit in results], [hit['abstract'] for hit in results]
