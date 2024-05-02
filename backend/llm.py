@@ -4,6 +4,7 @@ import torch
 import requests
 import json
 import os
+from llama_cpp import Llama
 
 # local parts taken from metal llama 3 hf website
 # https://medium.com/@yingbiao/gpt-3-5-in-action-call-gpt-api-33157169794f
@@ -12,9 +13,11 @@ class LLM:
     def __init__(self, llm_type):
         if llm_type == "local":
             self.model_local = True
-            self.model_id = None
-            self.pipeline = None
-            self.terminators = None
+            self.model = Llama.from_pretrained(
+                repo_id="SanctumAI/Meta-Llama-3-8B-Instruct-GGUF",
+                filename="*Q4_1.gguf",
+                n_gpu_layers=28, n_threads=6, n_ctx=3584, n_batch=521, verbose=True
+        )
         else:
             self.model_type = False
             self.model = "gpt-3.5-turbo"
@@ -25,40 +28,18 @@ class LLM:
             self.api_key = os.getenv("API_KEY")
             
     def local_llm(self, user_desc, query):
-        if self.model_id is None:
-            self.model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-
-            self.pipeline = transformers.pipeline(
-                "text-generation",
-                model=self.model_id,
-                model_kwargs={"torch_dtype": torch.bfloat16},
-                device_map="auto",
-            )
-            self.terminators = [
-                self.pipeline.tokenizer.eos_token_id,
-                self.pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>")
-            ]
-        
-        messages = [
+        output = self.model.create_chat_completion(
+                    messages = [
             {"role": "system", "content": f"You are extracting and defining difficult healthcare words from the input passage. Tailor the response to someone fitting the following description: \"{user_desc}\""},
             {"role": "user", "content": query},
-        ]
-
-        prompt = self.pipeline.tokenizer.apply_chat_template(
-                messages, 
-                tokenize=False, 
-                add_generation_prompt=True
+        ],
+            temperature=0.7,
+            max_tokens=2000, 
+            stop=["Q:"]
         )
 
-        outputs = self.pipeline(
-            prompt,
-            max_new_tokens=256,
-            eos_token_id=self.terminators,
-            do_sample=True,
-            temperature=0.6,
-            top_p=0.9,
-        )
-        return outputs[0]["generated_text"][len(prompt):]
+        print(output)
+        return output['choices'][0]['message']['content']
     
 
     def generate(self, message):
