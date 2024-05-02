@@ -40,7 +40,7 @@ class LLM:
             ]
         
         messages = [
-            {"role": "system", "content": "You are defining difficult healthcare words from the passage."},
+            {"role": "system", "content": "You are extracting and defining difficult healthcare words from the input passage."},
             {"role": "user", "content": message},
         ]
 
