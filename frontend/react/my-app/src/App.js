@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'react-bootstrap';
 import SearchBar from './component/SearchBar.js'; 
+import UserDescription from './component/UserDescription.js';
 function App() {
   const [searchResults, setSearchResults] = useState([]);
 
@@ -17,7 +18,8 @@ function App() {
         <span style={{ color: 'black' }}>Easyne</span>
     </h1>
     </div>
-    <Container className="mt-5">
+    <Container className="mt-2">
+      <UserDescription/>
       <SearchBar onSearch={handleSearch} />
       <div className="mt-3">
         {/* Display search results here */}
