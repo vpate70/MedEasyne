@@ -24,7 +24,7 @@ class LLM:
             }
             self.api_key = os.getenv("API_KEY")
             
-    def local_llm(self, message):
+    def local_llm(self, user_desc, query):
         if self.model_id is None:
             self.model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 
@@ -40,8 +40,8 @@ class LLM:
             ]
         
         messages = [
-            {"role": "system", "content": "You are extracting and defining difficult healthcare words from the input passage."},
-            {"role": "user", "content": message},
+            {"role": "system", "content": f"You are extracting and defining difficult healthcare words from the input passage. Tailor the response to someone fitting the following description: \"{user_desc}\""},
+            {"role": "user", "content": query},
         ]
 
         prompt = self.pipeline.tokenizer.apply_chat_template(

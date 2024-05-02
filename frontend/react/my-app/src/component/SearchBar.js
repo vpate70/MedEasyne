@@ -3,6 +3,7 @@ import { Form, FormControl, Button } from 'react-bootstrap';
 import SearchResult from './SearchResult'; 
 
 const SearchBar = () => {
+  const [description, setDescription] = useState('');
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
@@ -37,7 +38,18 @@ const SearchBar = () => {
 
   return (
     <div style={{  marginTop: '20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Form inline>
+            <FormControl
+                placeholder="I am a [middle school student | medical student | licensed doctor]"
+                style={{ width: '500px', height: '80px' }}
+                as="textarea"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+            />
+        </Form>
+        </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
         <Form inline>
           <FormControl
             type="text"
@@ -52,6 +64,7 @@ const SearchBar = () => {
       <div style={{ marginTop: '20px' }}>
         {results.map(result => (
               <SearchResult
+                desc={description}
                 title={result.title}
                 summary={result.summary}
                 authors={result.authors}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Button, Col, Row } from 'react-bootstrap';
 
-const SearchResult = ({ title, summary }) => {
+const SearchResult = ({ desc, title, summary }) => {
   const [apiResponse, setApiResponse] = useState(null);
   const [showResponse, setShowResponse] = useState(false);
 
@@ -17,7 +17,7 @@ const SearchResult = ({ title, summary }) => {
             headers: {
             'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query: summary }),
+            body: JSON.stringify({ user_desc: desc, query: summary }),
         };
         const response = await fetch(url, options);
         if (!response.ok) {
