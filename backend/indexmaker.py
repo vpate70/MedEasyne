@@ -16,7 +16,7 @@ schema = Schema(
     abstract=TEXT(stored=True)        # Abstract field for storing the abstract of the document
 )
 
-indexdir = "./index" + str(TO_FETCH)
+indexdir = "./index"
 if not os.path.exists(indexdir):
     os.mkdir(indexdir)
 ix = None
@@ -63,12 +63,3 @@ for i in range(1,TO_FETCH+1):
   download_and_extract(url)
   extract_info('pubmed.xml')
   print(i, url, time.process_time() - start)
-
-# def search(query_string):
-#     with ix.searcher() as searcher:
-#         query = MultifieldParser(["title", "abstract"], ix.schema).parse(query_string)
-#         results = searcher.search(query)
-#         for hit in results:
-#             print(hit)
-
-# search("Treatment")
